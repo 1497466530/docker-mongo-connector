@@ -2,6 +2,9 @@
 
 mongo="${MONGO:-mongo}"
 mongoport="${MONGOPORT:-27017}"
+mongouser="${MONGOUSER:-admin}"
+mongopass="${MONGOPASS:-}"
+esnamespace="${ESNAMESPACE:-}"
 elasticsearch="${ELASTICSEARCH:-elasticsearch}"
 elasticport="${ELASTICPORT:-9200}"
 
@@ -29,4 +32,11 @@ done
 
 sleep 1
 
-mongo-connector --auto-commit-interval=0 --oplog-ts=/data/oplog.ts -m ${mongo}:${mongoport} -t ${elasticsearch}:${elasticport} -d elastic_doc_manager
+mongo-connector --auto-commit-interval=0 \
+  --namespace-set=${esnamespace} \
+  --oplog-ts=/data/oplog.ts \
+  --main=${mongo}:${mongoport} \
+  --target-url=${elasticsearch}:${elasticport} \
+  --doc-manager=elastic_doc_manager \
+  --admin-username=${mongouser} \
+  --password=${mongopass}
