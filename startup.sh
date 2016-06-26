@@ -33,6 +33,7 @@ done
 sleep 1
 
 mongo-connector --auto-commit-interval=0 \
+  --continue-on-error \
   --namespace-set=${esnamespace} \
   --oplog-ts=/data/oplog.ts \
   --main=${mongo}:${mongoport} \
